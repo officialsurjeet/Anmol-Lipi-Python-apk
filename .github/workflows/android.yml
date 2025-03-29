@@ -16,10 +16,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up JDK
+      - name: Set up Java
         uses: actions/setup-java@v2
         with:
-          java-version: '17'  # Use the appropriate Java version for your project
+          distribution: 'temurin'  # Specify the distribution
+          java-version: '17'
+          java-package: jdk
 
       - name: Install dependencies
         run: |
@@ -33,11 +35,11 @@ jobs:
 
       - name: Build APK
         run: |
-          cd your_project_directory  # Change to your project directory
+          cd Anmol-Lipi-Python-apk  # Change to your project directory
           buildozer -v android debug  # Use 'release' for a release build
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: android-apk
           path: Anmol-Lipi-Python-apk/bin/*.apk  # Adjust the path to your APK
