@@ -33,13 +33,22 @@ jobs:
         run: |
           pip3 install buildozer
 
+      - name: Install Android SDK
+        run: |
+          sudo apt-get install -y wget unzip
+          wget https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip
+          mkdir -p $HOME/.android/cmdline-tools
+          unzip commandlinetools-linux-7302050_latest.zip -d $HOME/.android/cmdline-tools
+          yes | $HOME/.android/cmdline-tools/tools/bin/sdkmanager --licenses
+          $HOME/.android/cmdline-tools/tools/bin/sdkmanager "platforms;android-30" "build-tools;30.0.3"
+
       - name: Build APK
         run: |
           cd src  # Change to your project directory
           buildozer -v android debug  # Use 'release' for a release build
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: android-apk
           path: src/bin/*.apk  # Adjust the path to your APK
