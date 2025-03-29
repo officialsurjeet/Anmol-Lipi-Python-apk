@@ -48,7 +48,7 @@ jobs:
           buildozer -v android debug  # Use 'release' for a release build
 
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: android-apk
           path: src/bin/*.apk  # Adjust the path to your APK
