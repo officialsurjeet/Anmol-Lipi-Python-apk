@@ -35,11 +35,11 @@ jobs:
 
       - name: Build APK
         run: |
-          cd Anmol-Lipi-Python-apk  # Change to your project directory
+          cd src  # Change to your project directory
           buildozer -v android debug  # Use 'release' for a release build
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: Anmol-Lipi-Python-apk/bin/*.apk  # Adjust the path to your APK
+          path: src/bin/*.apk  # Adjust the path to your APK
