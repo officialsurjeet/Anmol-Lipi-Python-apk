@@ -1,44 +1,43 @@
-name: Build APK
+name: Build Android APK
 
-on: [push]
+on:
+  push:
+    branches:
+      - main  # Change this to your default branch
+  pull_request:
+    branches:
+      - main  # Change this to your default branch
 
 jobs:
-  build_apk:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'  # Use the appropriate Java version for your project
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install buildozer cython
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip python3-setuptools python3-wheel
+          pip3 install kivy
 
-    - name: Initialize Buildozer
-      run: |
-        cd src
-        buildozer init
+      - name: Install Buildozer
+        run: |
+          pip3 install buildozer
 
-    - name: Configure Buildozer
-      run: |
-        cd src
-        sed -i 's/^# \(android\.ndk_path = \)/\1\/opt\/android\/ndk/' buildozer.spec
-        sed -i 's/^# \(android\.sdk_path = \)/\1\/opt\/android\/sdk/' buildozer.spec
-        sed -i 's/^# \(android\.accept_sdk_license = \)/\1True/' buildozer.spec
+      - name: Build APK
+        run: |
+          cd your_project_directory  # Change to your project directory
+          buildozer -v android debug  # Use 'release' for a release build
 
-    - name: Build APK
-      run: |
-        cd src
-        buildozer -v android debug
-
-    - name: Upload APK
-      uses: actions/upload-artifact@v2
-      with:
-        name: android-apk
-        path: src/bin/*.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: android-apk
+          path: Anmol-Lipi-Python-apk/bin/*.apk  # Adjust the path to your APK
