@@ -37,10 +37,10 @@ jobs:
         run: |
           sudo apt-get install -y wget unzip
           wget https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip
-          mkdir -p $HOME/.android/cmdline-tools
-          unzip commandlinetools-linux-7302050_latest.zip -d $HOME/.android/cmdline-tools
-          yes | $HOME/.android/cmdline-tools/tools/bin/sdkmanager --licenses
-          $HOME/.android/cmdline-tools/tools/bin/sdkmanager "platforms;android-30" "build-tools;30.0.3"
+          mkdir -p $HOME/.android/cmdline-tools/latest
+          unzip commandlinetools-linux-7302050_latest.zip -d $HOME/.android/cmdline-tools/latest
+          yes | $HOME/.android/cmdline-tools/latest/bin/sdkmanager --licenses
+          $HOME/.android/cmdline-tools/latest/bin/sdkmanager "platforms;android-30" "build-tools;30.0.3"
 
       - name: Build APK
         run: |
