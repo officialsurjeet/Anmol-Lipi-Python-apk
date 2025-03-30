@@ -37,10 +37,14 @@ jobs:
     - name: Update PATH
       run: echo "$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools" >> $GITHUB_PATH
       
+    - name: Download gradlew
+      run: |
+        chmod +x gradlew
+
     - name: List directory contents
       run: ls -al ./
 
-
     - name: Build APK
-      run: ./gradlew build
+      run: ./gradlew assembleDebug
       working-directory: ./
+
