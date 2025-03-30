@@ -38,7 +38,7 @@ jobs:
       run: echo "$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools" >> $GITHUB_PATH
       
     - name: List directory contents
-      run: ls -al ./path-to-your-android-project
+      run: ls -al ./src
 
 
     - name: Build APK
