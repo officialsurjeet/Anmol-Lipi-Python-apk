@@ -31,6 +31,9 @@ jobs:
           unzip -q commandlinetools-linux-7583922_latest.zip
           rm commandlinetools-linux-7583922_latest.zip
 
+      - name: Debug Android SDK Path
+        run: ls -al $HOME/android-sdk/cmdline-tools/latest/bin
+
       - name: Set up Android SDK
         run: |
           echo "export ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
