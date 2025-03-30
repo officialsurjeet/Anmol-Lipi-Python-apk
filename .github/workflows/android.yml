@@ -16,39 +16,45 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Java
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'  # Specify the distribution
           java-version: '17'
           java-package: jdk
+      - name: Install Android SDK Command-Line Tools
+        run: |
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          cd $HOME/android-sdk/cmdline-tools
+          wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
+          unzip commandlinetools-linux-7583922_latest.zip
+          rm commandlinetools-linux-7583922_latest.zip
+          mv cmdline-tools latest
+
+      - name: Set up Android SDK
+        run: |
+          echo "export ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH" >> $GITHUB_ENV
+          yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses
+          sdkmanager --sdk_root=$ANDROID_HOME "platforms;android-30" "build-tools;30.0.3"  # Adjust the version as needed
 
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y python3 python3-pip python3-setuptools python3-wheel
-          pip3 install kivy cython
+          pip3 install kivy
 
       - name: Install Buildozer
         run: |
           pip3 install buildozer
 
-      - name: Install Android SDK
-        run: |
-          sudo apt-get install -y wget unzip
-          wget https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip
-          mkdir -p $HOME/.android/cmdline-tools/latest
-          unzip commandlinetools-linux-7302050_latest.zip -d $HOME/.android/cmdline-tools/latest
-          yes | $HOME/.android/cmdline-tools/latest/bin/sdkmanager --licenses
-          $HOME/.android/cmdline-tools/latest/bin/sdkmanager "platforms;android-30" "build-tools;30.0.3"
-
       - name: Build APK
         run: |
-          cd src  # Change to your project directory
+          cd your_project_directory  # Change to your project directory
           buildozer -v android debug  # Use 'release' for a release build
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: android-apk
-          path: src/bin/*.apk  # Adjust the path to your APK
+          path: your_project_directory/bin/*.apk  # Adjust the path to your APK
