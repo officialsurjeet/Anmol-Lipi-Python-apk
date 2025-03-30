@@ -22,25 +22,26 @@ jobs:
           distribution: 'temurin'  # Specify the distribution
           java-version: '17'
           java-package: jdk
-      - name: Install Android SDK Command-Line Tools
-- name: Install Android SDK Command-Line Tools
-  run: |
-    mkdir -p $HOME/android-sdk/cmdline-tools
-    cd $HOME/android-sdk/cmdline-tools
-    wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-    unzip commandlinetools-linux-7583922_latest.zip -d cmdline-tools
-    rm commandlinetools-linux-7583922_latest.zip
-    mv cmdline-tools latest
 
-- name: Set up Android SDK
-  run: |
-    echo "export ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
-    echo "export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH" >> $GITHUB_ENV
-    export ANDROID_HOME=$HOME/android-sdk
-    export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
-    yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses
-    $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME "platforms;android-30" "build-tools;30.0.3"  # Adjust the version as needed
-- name: Install dependencies
+      - name: Install Android SDK Command-Line Tools
+        run: |
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          cd $HOME/android-sdk/cmdline-tools
+          wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
+          unzip commandlinetools-linux-7583922_latest.zip -d cmdline-tools
+          rm commandlinetools-linux-7583922_latest.zip
+          mv cmdline-tools latest
+
+      - name: Set up Android SDK
+        run: |
+          echo "export ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH" >> $GITHUB_ENV
+          export ANDROID_HOME=$HOME/android-sdk
+          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+          yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses
+          $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME "platforms;android-30" "build-tools;30.0.3"  # Adjust the version as needed
+
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y python3 python3-pip python3-setuptools python3-wheel
@@ -52,11 +53,11 @@ jobs:
 
       - name: Build APK
         run: |
-          cd your_project_directory  # Change to your project directory
+          cd src  # Change to your project directory
           buildozer -v android debug  # Use 'release' for a release build
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: your_project_directory/bin/*.apk  # Adjust the path to your APK
+          path: src/bin/*.apk  # Adjust the path to your APK
