@@ -38,8 +38,9 @@ jobs:
       run: echo "$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools" >> $GITHUB_PATH
       
     - name: List directory contents
-      run: ls -al ./src
+      run: ls -al ./
 
 
     - name: Build APK
       run: ./gradlew build
+      working-directory: ./
